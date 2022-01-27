@@ -7,6 +7,7 @@ ruleset wovyn_base {
     rule process_heartbeat {
         select when wovyn heartbeat
         pre {
+            log = event:attrs.klog("attrs")
             msg = "The current temperature is: "
         }
         send_directive(msg)
