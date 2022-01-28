@@ -10,6 +10,6 @@ ruleset wovyn_base {
             log = event:attrs.klog("attrs")
             msg = "The current temperature is: ".klog()
         }
-        send_directive("wovyn heartbeat", {"body": msg})
+        if event:attrs{"genericThing"} then send_directive("wovyn heartbeat", {"body": msg})
     }
 }
