@@ -13,7 +13,8 @@ ruleset wovyn_base {
         if event:attrs{"genericThing"} then send_directive("wovyn heartbeat", {"body": msg});
         fired {
             raise wovyn event "new_temperature_reading" attributes {
-                
+                "temperature" : event:attrs{"genericThing"}{"data"}{"temperature"}[0]{"temperatureF"},
+                "timestamp" : time:now()
             }
         }
     }
