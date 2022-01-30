@@ -18,4 +18,9 @@ ruleset wovyn_base {
             }
         }
     }
+
+    rule find_high_temps {
+        select when wovyn new_temperature_reading
+        
+    }
 }
