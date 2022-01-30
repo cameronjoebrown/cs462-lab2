@@ -4,6 +4,9 @@ ruleset wovyn_base {
         description << Ruleset for Wovyn Base >>
         author "Cameron Brown"
     }
+    global {
+        temperature_threshold = 65;
+    }
     rule process_heartbeat {
         select when wovyn heartbeat
         pre {
@@ -21,6 +24,13 @@ ruleset wovyn_base {
 
     rule find_high_temps {
         select when wovyn new_temperature_reading
-        
+        pre {
+            temperature = event:attrs{"temperature"}
+        }
+        fired {
+            raise wovyn event "threshold_violation" attributes {
+            
+            } if temperature > temperature_threshold
+        }
     }
 }
