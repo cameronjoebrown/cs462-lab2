@@ -46,11 +46,11 @@ ruleset wovyn_base {
     rule threshold_notification {
         select when wovyn threshold_violation
         pre {
-            to = event:attrs{"to"}.klog()
-            sender = event:attrs{"sender"}.klog()
-            message = event:attrs{"message"}.klog()
+            to = toNumber
+            sender = "+19402907444"
+            message = "It is too hot."
         }
-        twilio:send_sms(toNumber, sender, message) setting(response)
+        twilio:send_sms(to, sender, message) setting(response)
 
         fired {
             ent:lastResponse := response
