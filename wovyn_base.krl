@@ -3,9 +3,18 @@ ruleset wovyn_base {
         name "Wovyn Base"
         description << Ruleset for Wovyn Base >>
         author "Cameron Brown"
+        use module twilio
+            with
+                account_sid = meta:rulesetConfig{"account_sid"}
+                auth_token = meta:rulesetConfig{"auth_token"}
+        shares lastResponse
     }
     global {
         temperature_threshold = 65;
+        lastResponse = function() {
+            {}.put(ent:lastTimestamp, ent:lastResponse)
+        }
+        toNumber = "+14352162134"
     }
     rule process_heartbeat {
         select when wovyn heartbeat
@@ -31,6 +40,21 @@ ruleset wovyn_base {
             raise wovyn event "threshold_violation" attributes {
             
             } if temperature > temperature_threshold
+        }
+    }
+
+    rule threshold_notification {
+        select when wovyn threshold_violation
+        pre {
+            to = event:attrs{"to"}.klog()
+            sender = event:attrs{"sender"}.klog()
+            message = event:attrs{"message"}.klog()
+        }
+        twilio:send_sms(toNumber, sender, message) setting(response)
+
+        fired {
+            ent:lastResponse := response
+            ent:lastTimestamp := time:now()
         }
     }
 }
