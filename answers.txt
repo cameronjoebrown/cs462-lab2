@@ -1,0 +1,19 @@
+1. I used a conditional statement.
+2. Knowing which sensor the temperatures are coming from would
+   be easier if each sensor had a different channel. I also
+   think that having a seperate channel for each sensor
+   would prevent race conditions.
+3. It was just sending a directive. Nothing else was happening.
+4. Output was mostly the same, but now the new_temperature_reading
+   was actually triggering the find_high_temps rule.
+5. The difference is that an event was being raised, but
+   no rule was catching the event and doing anything with it.
+6. Yes. It doesn't really do anything but catch the new_temperature_reading
+   event and then raise another event if a condition is met.
+7.08:41:32.927Z [DEBUG] txnQueued EVENT cky9r3iga000vw7zva2fb7v1z wovyn:new_temperature_reading {"temperature":75}
+  08:41:32.928Z [DEBUG] txnStart {}
+  08:41:32.928Z [DEBUG] event added to schedule {"eci":"cky9r3iga000vw7zva2fb7v1z","domain":"wovyn","name":"new_temperature_reading","data":{"attrs":{"temperature":75,"_headers":{"host":"localhost:3000","connection":"keep-alive","content-length":"18","sec-ch-ua":"\" Not;A Brand\";v=\"99\", \"Google Chrome\";v=\"97\", \"Chromium\";v=\"97\"","sec-ch-ua-mobile":"?0","user-agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36","sec-ch-ua-platform":"\"macOS\"","content-type":"application/json; charset=utf-8","accept":"*/*","origin":"http://localhost:3000","sec-fetch-site":"same-origin","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:3000/","accept-encoding":"gzip, deflate, br","accept-language":"en-US,en;q=0.9,fi;q=0.8"}}},"time":1643532092927}
+  08:41:32.930Z [DEBUG] rule selected wovyn_base : find_high_temps
+
+  A new_temperature_reading event was raised and the find_high_temps rule was selected
+  because of it.
